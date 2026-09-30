@@ -24,8 +24,8 @@ resource "aws_verifiedaccess_group" "this" {
   depends_on = [
     aws_verifiedaccess_instance_trust_provider_attachment.identity_center
   ]
-  
-  description= "Allow only verified IAM Identity Center users in DevOps-Team"
+
+  description = "Allow only verified IAM Identity Center users in DevOps-Team"
 
   policy_document = <<-CEDAR
     permit(principal, action, resource)
@@ -45,13 +45,13 @@ resource "aws_verifiedaccess_endpoint" "this" {
   endpoint_domain_prefix   = "project-sagardubey"
   application_domain       = var.subdomain
   domain_certificate_arn   = var.acm_certificate_arn
-  security_group_ids       = [aws_security_group.alb.id]
+  security_group_ids       = [aws_security_group.verified_access_endpoint.id]
 
   load_balancer_options {
     load_balancer_arn = aws_lb.app.arn
     port              = 443
     protocol          = "https"
-    subnet_ids        = aws_subnet.public[*].id
+    subnet_ids        = aws_subnet.private[*].id
   }
 
   tags = { Name = "verified-access-demo-endpoint" }

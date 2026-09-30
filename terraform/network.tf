@@ -39,3 +39,25 @@ resource "aws_route_table_association" "public" {
   subnet_id      = aws_subnet.public[count.index].id
   route_table_id = aws_route_table.public.id
 }
+
+resource "aws_subnet" "private" {
+  count = 2
+
+  vpc_id            = aws_vpc.this.id
+  cidr_block        = cidrsubnet(aws_vpc.this.cidr_block, 8, count.index + 10)
+  availability_zone = data.aws_availability_zones.available.names[count.index]
+
+  tags = { Name = "verified-access-private-${count.index + 1}" }
+}
+
+resource "aws_route_table" "private" {
+  vpc_id = aws_vpc.this.id
+  tags   = { Name = "verified-access-private-rt" }
+}
+
+resource "aws_route_table_association" "private" {
+  count = 2
+
+  subnet_id      = aws_subnet.private[count.index].id
+  route_table_id = aws_route_table.private.id
+}
