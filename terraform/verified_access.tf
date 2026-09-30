@@ -19,7 +19,13 @@ resource "aws_verifiedaccess_instance_trust_provider_attachment" "identity_cente
 
 resource "aws_verifiedaccess_group" "this" {
   verifiedaccess_instance_id = aws_verifiedaccess_instance.this.id
-  description                = "Allow only verified IAM Identity Center users in DevOps-Team"
+
+  # Add this explicit dependency:
+  depends_on = [
+    aws_verifiedaccess_instance_trust_provider_attachment.identity_center
+  ]
+  
+  description= "Allow only verified IAM Identity Center users in DevOps-Team"
 
   policy_document = <<-CEDAR
     permit(principal, action, resource)
