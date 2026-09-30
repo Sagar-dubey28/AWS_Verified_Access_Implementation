@@ -1,0 +1,6 @@
+aws_region                 = "us-west-2"
+subdomain                  = "project.sagardubey.in"
+acm_certificate_arn        = "arn:aws:acm:us-west-2:123456789012:certificate/REPLACE-ME"
+identity_center_group_name = "DevOps-Team"
+alert_email                = ""
+instance_type              = "t3.micro"
